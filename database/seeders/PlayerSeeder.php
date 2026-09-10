@@ -44,7 +44,7 @@ final class PlayerSeeder extends Seeder
         for ($i = 0; $i < 24; $i++) {
             $this->createPlayer(
                 [
-                    'name' => fake()->randomElement($rwandanNames).' '.fake()->randomElement($givenNames),
+                    'name' => $rwandanNames[array_rand($rwandanNames)].' '.$givenNames[array_rand($givenNames)],
                     'email' => fake()->unique()->safeEmail(),
                 ],
                 $countryIds,
@@ -55,7 +55,7 @@ final class PlayerSeeder extends Seeder
         for ($i = 0; $i < 2; $i++) {
             $this->createPlayer(
                 [
-                    'name' => fake()->randomElement($rwandanNames).' '.fake()->randomElement($givenNames),
+                    'name' => $rwandanNames[array_rand($rwandanNames)].' '.$givenNames[array_rand($givenNames)],
                     'email' => fake()->unique()->safeEmail(),
                 ],
                 $countryIds,
