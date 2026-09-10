@@ -37,6 +37,7 @@ final class GameSeeder extends Seeder
         $courts = Court::query()->get();
         $config = RankingConfiguration::query()->latest('id')->firstOrFail();
         $createAllocation = resolve(CreateAllocation::class);
+        $gameTitles = ['Amahoro', 'Ubumwe', 'Imena', 'Intwari', 'Imihigo', 'Agaciro', 'Ishema', 'Ihuriro'];
         $formats = [
             GameFormat::ONE_ON_ONE->value,
             GameFormat::THREE_ON_THREE->value,
@@ -59,6 +60,7 @@ final class GameSeeder extends Seeder
                         : fake()->dateTimeBetween('-1 year', '-31 days');
 
                     $game = Game::factory()->create([
+                        'title' => fake()->randomElement($gameTitles),
                         'player_id' => $pathwayPlayer->id,
                         'format' => $format,
                         'status' => GameStatus::Approved->value,
@@ -88,6 +90,7 @@ final class GameSeeder extends Seeder
                     : fake()->dateTimeBetween('-1 year', '-31 days');
 
                 $game = Game::factory()->create([
+                    'title' => fake()->randomElement($gameTitles),
                     'player_id' => $players->random()->id,
                     'format' => $format,
                     'status' => GameStatus::Approved->value,
@@ -112,6 +115,7 @@ final class GameSeeder extends Seeder
         foreach ($formats as $format) {
             for ($i = 0; $i < 3; $i++) {
                 $game = Game::factory()->create([
+                    'title' => fake()->randomElement($gameTitles),
                     'player_id' => $players->random()->id,
                     'format' => $format,
                     'status' => GameStatus::Rejected->value,
@@ -135,6 +139,7 @@ final class GameSeeder extends Seeder
         foreach ($formats as $format) {
             for ($i = 0; $i < 2; $i++) {
                 $game = Game::factory()->create([
+                    'title' => fake()->randomElement($gameTitles),
                     'player_id' => $players->random()->id,
                     'format' => $format,
                     'status' => GameStatus::Flagged->value,
@@ -156,6 +161,7 @@ final class GameSeeder extends Seeder
         foreach ($formats as $format) {
             for ($i = 0; $i < 3; $i++) {
                 Game::factory()->create([
+                    'title' => fake()->randomElement($gameTitles),
                     'player_id' => $players->random()->id,
                     'format' => $format,
                     'status' => GameStatus::Pending->value,
@@ -170,6 +176,7 @@ final class GameSeeder extends Seeder
         foreach ($formats as $format) {
             for ($i = 0; $i < 2; $i++) {
                 Game::factory()->scheduled()->create([
+                    'title' => fake()->randomElement($gameTitles),
                     'player_id' => $players->random()->id,
                     'format' => $format,
                     'court_id' => $courts->random()->id,
@@ -186,6 +193,7 @@ final class GameSeeder extends Seeder
 
         foreach ($teams as $index => $team) {
             $game = Game::factory()->create([
+                'title' => fake()->randomElement($gameTitles),
                 'participant' => GameParticipant::TEAM,
                 'team_id' => $team->id,
                 'player_id' => $team->user_id,

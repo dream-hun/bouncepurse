@@ -16,13 +16,16 @@ final class PlayerSeeder extends Seeder
     public function run(): void
     {
         /** @var Collection<int, int> $countryIds */
-        $countryIds = Country::query()->pluck('id');
+        $countryIds = Country::query()->where('iso_code', 'RWA')->pluck('id');
+
+        $rwandanNames = ['Mugisha', 'Nkurunziza', 'Hakizimana', 'Niyonzima', 'Uwase', 'Mukamana', 'Ishimwe', 'Irakoze'];
+        $givenNames = ['James', 'Jordan', 'Maya', 'Luis', 'Grace', 'Samuel', 'David', 'Alice'];
 
         $adultPlayers = [
-            ['name' => 'Demo Player', 'email' => 'player@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
-            ['name' => 'Jordan Blake', 'email' => 'jordan@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
-            ['name' => 'Maya Okonkwo', 'email' => 'maya@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
-            ['name' => 'Luis Fernandez', 'email' => 'luis@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
+            ['name' => 'Mugisha James', 'email' => 'player@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
+            ['name' => 'Nkurunziza Jordan', 'email' => 'jordan@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
+            ['name' => 'Uwase Maya', 'email' => 'maya@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
+            ['name' => 'Hakizimana Luis', 'email' => 'luis@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
         ];
 
         foreach ($adultPlayers as $data) {
@@ -30,8 +33,8 @@ final class PlayerSeeder extends Seeder
         }
 
         $minorPlayers = [
-            ['name' => 'Alex Rivera', 'email' => 'minor@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
-            ['name' => 'Sam Chen', 'email' => 'minor2@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
+            ['name' => 'Ishimwe Grace', 'email' => 'minor@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
+            ['name' => 'Irakoze Samuel', 'email' => 'minor2@bouncepurse.test', 'password' => DemoCredentials::PASSWORD],
         ];
 
         foreach ($minorPlayers as $data) {
@@ -40,7 +43,10 @@ final class PlayerSeeder extends Seeder
 
         for ($i = 0; $i < 24; $i++) {
             $this->createPlayer(
-                ['name' => fake()->name(), 'email' => fake()->unique()->safeEmail()],
+                [
+                    'name' => fake()->randomElement($rwandanNames).' '.fake()->randomElement($givenNames),
+                    'email' => fake()->unique()->safeEmail(),
+                ],
                 $countryIds,
                 fake()->dateTimeBetween('-40 years', '-18 years')->format('Y-m-d'),
             );
@@ -48,7 +54,10 @@ final class PlayerSeeder extends Seeder
 
         for ($i = 0; $i < 2; $i++) {
             $this->createPlayer(
-                ['name' => fake()->name(), 'email' => fake()->unique()->safeEmail()],
+                [
+                    'name' => fake()->randomElement($rwandanNames).' '.fake()->randomElement($givenNames),
+                    'email' => fake()->unique()->safeEmail(),
+                ],
                 $countryIds,
                 fake()->dateTimeBetween('-17 years', '-13 years')->format('Y-m-d'),
             );
@@ -58,7 +67,7 @@ final class PlayerSeeder extends Seeder
 
         $deactivated = $this->createPlayer(
             [
-                'name' => 'Deactivated Player',
+                'name' => 'Niyonzima David',
                 'email' => 'deactivated@bouncepurse.test',
                 'password' => DemoCredentials::PASSWORD,
             ],
@@ -84,6 +93,7 @@ final class PlayerSeeder extends Seeder
         Profile::factory()->create([
             'player_id' => $user->id,
             'country_id' => $countryIds->random(),
+            'city' => fake()->randomElement(['Kigali', 'Huye', 'Musanze', 'Rubavu', 'Muhanga', 'Rusizi']),
             'date_of_birth' => $dateOfBirth,
         ]);
 
